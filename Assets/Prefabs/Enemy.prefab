@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4779440567944180987}
   - component: {fileID: 2380611928946504252}
   - component: {fileID: 7582208534628997901}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Life
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 8265538729498859012}
   - component: {fileID: 3415179839691095379}
   - component: {fileID: 2165837800118570162}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: LifeBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -176,7 +176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7894665241086605832}
   - component: {fileID: 5805891205820385228}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Graphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -265,7 +265,7 @@ GameObject:
   - component: {fileID: 7042819931008691165}
   - component: {fileID: 717274828804270328}
   - component: {fileID: 1799816837422851489}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -281,7 +281,7 @@ Transform:
   m_GameObject: {fileID: 2106556985664208987}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.51, y: 5.59, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -357,13 +357,14 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  speed: 2
+  speed: 10
   maxHealth: 5
   currentHealth: 0
   canvasLife: {fileID: 8756599401049789056}
   lifeBar: {fileID: 7582208534628997901}
   damageToPlayer: 1
   graphicsObject: {fileID: 5805891205820385228}
+  rb2D: {fileID: 1799816837422851489}
 --- !u!50 &1799816837422851489
 Rigidbody2D:
   serializedVersion: 5
@@ -379,14 +380,14 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -402,7 +403,7 @@ GameObject:
   - component: {fileID: 465481881189715243}
   - component: {fileID: 6153657067368204993}
   - component: {fileID: 8762217100980565194}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: LifeCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}

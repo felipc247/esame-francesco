@@ -130,6 +130,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1902694685496250442}
   - component: {fileID: 3677713323675064950}
+  - component: {fileID: 7115798317087914616}
   m_Layer: 0
   m_Name: Tower
   m_TagString: Untagged
@@ -166,12 +167,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75ee04927a50b264e933a8110059ed7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 2
-  fireRate: 1
-  projectileSpeed: 1000
+  turretLevelsData:
+  - {fileID: 11400000, guid: 30ab4e1cecd354f4b8a7b42d3853aea4, type: 2}
+  - {fileID: 11400000, guid: c5cae8a1e19e11d42a8476ffe0d17198, type: 2}
+  - {fileID: 11400000, guid: 5bd4e43b59a81de48910bec8403bb221, type: 2}
+  currentData: {fileID: 0}
   cannonGraphics: {fileID: 2887825084856791242}
   firePoint: {fileID: 408199583184931185}
   projectilePrefab: {fileID: 6511734976158796608, guid: abb6f8dc185a8804e87ff4f1c0e44657, type: 3}
+  spriteRendererBase: {fileID: 8368074004574274151}
+  spriteRendererCannon: {fileID: 5132447468255388508}
+  colorSelected: {r: 0.7529412, g: 1, b: 0.08235294, a: 1}
+--- !u!61 &7115798317087914616
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2169624064719797929}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &8379643078284845944
 GameObject:
   m_ObjectHideFlags: 0

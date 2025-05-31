@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,15 +25,27 @@ public class EnemyController : MonoBehaviour
     [Header("Graphics")]
     [SerializeField] SpriteRenderer graphicsObject;
 
+    [Header("Physics")]
+    [SerializeField] Rigidbody2D rb2D;
+
+    [Header("Reward")]
+    [SerializeField] int reward;
+
+    public int Reward => reward;
+
     // TODO: Modificare lo script in modo che si usi il RigidBody2D per il movimento invece che transform.position
 
     private void Start()
     {
-        currentHealth = maxHealth;
     }
 
     private void Update()
     {
+    }
+
+    private void FixedUpdate()
+    {
+
         FollowPath();
     }
 
@@ -39,14 +53,14 @@ public class EnemyController : MonoBehaviour
     {
         if (pathPoints == null || pathPoints.Count == 0) return;
 
-        Vector3 targetPoint = pathPoints[currentPointIndex].position;
-        Vector3 direction = (targetPoint - transform.position).normalized;
+        Vector2 targetPoint = pathPoints[currentPointIndex].position;
+        Vector2 direction = (targetPoint - (Vector2)(transform.position)).normalized;
 
-        transform.position += direction * speed * Time.deltaTime;
+        rb2D.linearVelocity = (speed * Time.fixedDeltaTime * direction); /*= (Vector2)(speed * Time.fixedDeltaTime * direction);*/
 
         UpdateGraphicsRotation(direction);
 
-        if (Vector3.Distance(transform.position, targetPoint) < 0.1f)
+        if (Vector2.Distance(transform.position, targetPoint) < 0.1f)
         {
             currentPointIndex++;
             if (currentPointIndex >= pathPoints.Count)
@@ -54,7 +68,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void UpdateGraphicsRotation(Vector3 direction)
+    private void UpdateGraphicsRotation(Vector2 direction)
     {
         if (graphicsObject == null) return;
 
@@ -113,6 +127,21 @@ public class EnemyController : MonoBehaviour
     private void Die()
     {
         // TODO: Si potrebbe fare di meglio? Come possiamo non eliminare l'oggetto e usarlo in un altro modo?
-        Destroy(gameObject);
+        GameManager.Instance.AddCoins(reward);
+        WaveManager.Instance.Pooler.Set(this);
+        gameObject.SetActive(false);
+    }
+
+    internal void Initialize(List<Transform> pathPoints)
+    {
+        if (!gameObject.activeSelf)
+        {
+            gameObject.SetActive(true);
+        }
+        else
+        {
+            this.pathPoints = pathPoints;
+        }
+        currentHealth = maxHealth;
     }
 }

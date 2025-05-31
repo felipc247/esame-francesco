@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using DesignPatterns.Generics;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class TowerGridManager : MonoBehaviour
+public class TowerGridManager : Singleton<TowerGridManager>
 {
     public enum CellType { Empty, Road, Tree, Tower }
 
@@ -12,8 +13,8 @@ public class TowerGridManager : MonoBehaviour
     public float cellSize = 1f;
 
     [Header("Impostazioni manuali")]
-    public List<Vector2Int> roadCells = new List<Vector2Int>();
-    public List<Vector2Int> treeCells = new List<Vector2Int>();
+    public List<Vector2Int> roadCells = new();
+    public List<Vector2Int> treeCells = new();
 
     [Header("Editor Brush")]
     public CellType brushType = CellType.Road;
@@ -27,6 +28,9 @@ public class TowerGridManager : MonoBehaviour
     private GameObject[,] gridVisual;
 
     private TurretButton selectedTurretButton;
+    private Camera mainCamera;
+
+    private Dictionary<TurretController, Vector2Int> towersPositions;
 
     private void OnValidate()
     {
@@ -35,6 +39,8 @@ public class TowerGridManager : MonoBehaviour
 
     private void Start()
     {
+        mainCamera = Camera.main;
+        towersPositions = new();
         InitGrid();
     }
 
@@ -61,7 +67,7 @@ public class TowerGridManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
             Vector2Int cell = WorldToCell(mouseWorldPos);
             TryPlaceTower(cell);
         }
@@ -131,12 +137,23 @@ public class TowerGridManager : MonoBehaviour
         if (!InBounds(cell)) return;
         if (grid[cell.x, cell.y] != CellType.Empty) return;
 
-        if (GameManager.Instance.SpendCoins(selectedTurretButton.cost))
+        if (GameManager.Instance.SpendCoins(selectedTurretButton.Cost))
         {
             Vector3 spawnPos = transform.position + new Vector3(cell.x * cellSize + cellSize / 2f, cell.y * cellSize + cellSize / 2f);
-            Instantiate(selectedTurretButton.TurretPrefab, spawnPos, Quaternion.identity, towerParent);
+            TurretController turret = Instantiate(selectedTurretButton.TurretPrefab, spawnPos, Quaternion.identity, towerParent);
+            turret.Initialize(selectedTurretButton.BaseTurret);
             grid[cell.x, cell.y] = CellType.Tower;
+            towersPositions[turret] = new(cell.x, cell.y);
         }
+    }
+
+    public void RemoveTower(TurretController turret)
+    {
+        if (!towersPositions.ContainsKey(turret)) return;
+
+        Vector2Int position = towersPositions[turret];
+        grid[position.x, position.y] = CellType.Empty;
+        towersPositions.Remove(turret);
     }
 
     private bool InBounds(Vector2Int c) =>

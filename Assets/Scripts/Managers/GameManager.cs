@@ -5,6 +5,13 @@ public class GameManager : Singleton<GameManager>
 {
     [Header("Monete del giocatore")]
     [SerializeField] private int startingCoins = 100;
+
+    public Damager DamagerPrefab;
+    public ObjectPooler<Damager> BulletPooler;
+
+    public int CurrentHealth;
+    public int MaxHealth;
+
     private int currentCoins;
 
     public int CurrentCoins => currentCoins;
@@ -12,6 +19,8 @@ public class GameManager : Singleton<GameManager>
     public override void Awake()
     {
         base.Awake();
+        CurrentHealth = MaxHealth;
+        BulletPooler = new(DamagerPrefab);
         currentCoins = startingCoins;
     }
 
@@ -40,5 +49,15 @@ public class GameManager : Singleton<GameManager>
             // TODO: Aggiungere un evento qui per aggiornare l'UI
             return false;
         }
+    }
+
+    public void TakeDamage(int damage)
+    { 
+        
+    }
+
+    private void Die()
+    {
+        Debug.Log("You lost");
     }
 }
