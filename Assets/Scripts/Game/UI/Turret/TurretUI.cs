@@ -21,6 +21,8 @@ public class TurretUI : MonoBehaviour, ISubscriber
 
     private TurretController currentTurret;
 
+    private const string MAX = "MAX";
+
     private void Awake()
     {
         Publisher.Subscribe(this, typeof(ShowTurretInfoMessage));
@@ -61,14 +63,21 @@ public class TurretUI : MonoBehaviour, ISubscriber
     {
         if (!currentTurret) return;
 
-        textRange.text = currentTurret.Range.ToString();
-        textFireRate.text = currentTurret.FireRate.ToString();
-        textDamage.text = currentTurret.Damage.ToString();
-        textLevel.text = currentTurret.Level.ToString();
+        TurretData nextData = currentTurret.NextData;
+        string nextRange = nextData != null ? nextData.Range.ToString() : MAX;
+        string nextFireRate = nextData != null ? nextData.FireRate.ToString() : MAX;
+        string nextDamage = nextData != null ? nextData.Damage.ToString() : MAX;
+        string nextLevel = nextData != null ? (currentTurret.Level + 1).ToString() : MAX;
+
+        textRange.text = $"{currentTurret.Range} => {nextRange}";
+        textFireRate.text = $"{currentTurret.FireRate} => {nextFireRate}";
+        textDamage.text = $"{currentTurret.Damage} => {nextDamage}";
+        textLevel.text = $"{currentTurret.Level} => {nextLevel}";
 
         textSellPrice.text = currentTurret.SellPrice.ToString();
-        textUpgradeCost.text = currentTurret.UpgradeCost.ToString();
-        
+
+        string upgradeCost = currentTurret.UpgradeCost == -1 ? MAX : currentTurret.UpgradeCost.ToString();
+        textUpgradeCost.text = upgradeCost;
     }
 
     private void Hide()

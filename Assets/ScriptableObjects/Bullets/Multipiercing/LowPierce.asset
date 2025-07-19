@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78c6f26612ac8594c8655e603af494c6, type: 3}
+  m_Name: LowPierce
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 7359533774408546997, guid: 884395ac40fca7d4184691adc240038f, type: 3}
+  piercingCount: 3

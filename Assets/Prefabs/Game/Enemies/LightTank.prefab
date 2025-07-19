@@ -263,10 +263,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4400881419899334107}
   - component: {fileID: 7042819931008691165}
-  - component: {fileID: 717274828804270328}
   - component: {fileID: 1799816837422851489}
+  - component: {fileID: 717274828804270328}
   m_Layer: 3
-  m_Name: Enemy
+  m_Name: LightTank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -319,7 +319,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -335,36 +335,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.61, y: 0.67}
   m_EdgeRadius: 0
---- !u!114 &717274828804270328
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2106556985664208987}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24367130ccc32ff4fb2d05fb0be0efaa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pathPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  speed: 10
-  maxHealth: 5
-  currentHealth: 0
-  canvasLife: {fileID: 8756599401049789056}
-  lifeBar: {fileID: 7582208534628997901}
-  damageToPlayer: 1
-  graphicsObject: {fileID: 5805891205820385228}
-  rb2D: {fileID: 1799816837422851489}
 --- !u!50 &1799816837422851489
 Rigidbody2D:
   serializedVersion: 5
@@ -390,8 +360,35 @@ Rigidbody2D:
     m_Bits: 8
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!114 &717274828804270328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106556985664208987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24367130ccc32ff4fb2d05fb0be0efaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyData: {fileID: 11400000, guid: da8a837e4312edc43abdf07a4119cdb0, type: 2}
+  pathPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  canvasLife: {fileID: 8756599401049789056}
+  lifeBar: {fileID: 7582208534628997901}
+  graphicsObject: {fileID: 5805891205820385228}
+  rb2D: {fileID: 1799816837422851489}
 --- !u!1 &8756599401049789056
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,11 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd2c7f58d3588d345b759c0da36895b7, type: 3}
-  m_Name: Level3
+  m_Script: {fileID: 11500000, guid: 78c6f26612ac8594c8655e603af494c6, type: 3}
+  m_Name: MediumPierce
   m_EditorClassIdentifier: 
-  range: 5
-  fireRate: 2
-  projectileSpeed: 1000
-  damage: 3
-  cost: 500
+  bulletPrefab: {fileID: 7359533774408546997, guid: 884395ac40fca7d4184691adc240038f, type: 3}
+  piercingCount: 5

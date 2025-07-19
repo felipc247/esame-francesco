@@ -1,23 +1,23 @@
 ﻿using DesignPatterns.Generics;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+public enum CellType { Empty, Road, Tree, Tower }
+
 public class TowerGridManager : Singleton<TowerGridManager>
 {
-    public enum CellType { Empty, Road, Tree, Tower }
+    public GridData CurrentGridData;
 
     [Header("Griglia")]
-    public int width = 10;
-    public int height = 10;
-    public float cellSize = 1f;
+    public int Width => (CurrentGridData) ? CurrentGridData.Width : 0;
+    public int Height => (CurrentGridData) ? CurrentGridData.Height : 0;
+    public float CellSize => CurrentGridData ? CurrentGridData.CellSize : 1f;
 
     [Header("Impostazioni manuali")]
-    public List<Vector2Int> roadCells = new();
-    public List<Vector2Int> treeCells = new();
-
-    [Header("Editor Brush")]
-    public CellType brushType = CellType.Road;
+    public List<Vector2Int> RoadCells => (CurrentGridData) ? CurrentGridData.RoadCells : new List<Vector2Int>();
+    public List<Vector2Int> TreeCells => (CurrentGridData) ? CurrentGridData.TreeCells : new List<Vector2Int>();
 
     [Header("Prefab e Torre")]
     public GameObject cellPrefab;
@@ -46,16 +46,16 @@ public class TowerGridManager : Singleton<TowerGridManager>
 
     private void InitGrid()
     {
-        grid = new CellType[width, height];
+        grid = new CellType[Width, Height];
 
-        for (int x = 0; x < width; x++)
-            for (int y = 0; y < height; y++)
+        for (int x = 0; x < Width; x++)
+            for (int y = 0; y < Height; y++)
                 grid[x, y] = CellType.Empty;
 
-        foreach (var c in roadCells)
+        foreach (var c in RoadCells)
             if (InBounds(c)) grid[c.x, c.y] = CellType.Road;
 
-        foreach (var c in treeCells)
+        foreach (var c in TreeCells)
             if (InBounds(c)) grid[c.x, c.y] = CellType.Tree;
     }
 
@@ -77,13 +77,13 @@ public class TowerGridManager : Singleton<TowerGridManager>
     {
         ClearVisualGrid();
 
-        gridVisual = new GameObject[width, height];
+        gridVisual = new GameObject[Width, Height];
 
-        for (int x = 0; x < width; x++)
+        for (int x = 0; x < Width; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < Height; y++)
             {
-                Vector3 cellPos = transform.position + new Vector3(x * cellSize, y * cellSize);
+                Vector3 cellPos = transform.position + new Vector3(x * CellSize, y * CellSize);
                 GameObject cell = Instantiate(cellPrefab, cellPos, Quaternion.identity, gridParent);
                 gridVisual[x, y] = cell;
             }
@@ -104,9 +104,9 @@ public class TowerGridManager : Singleton<TowerGridManager>
     {
         if (gridVisual == null) return;
 
-        for (int x = 0; x < width; x++)
+        for (int x = 0; x < Width; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < Height; y++)
             {
                 var rend = gridVisual[x, y].GetComponentInChildren<SpriteRenderer>();
                 if (grid[x, y] == CellType.Empty)
@@ -139,7 +139,7 @@ public class TowerGridManager : Singleton<TowerGridManager>
 
         if (GameManager.Instance.SpendCoins(selectedTurretButton.Cost))
         {
-            Vector3 spawnPos = transform.position + new Vector3(cell.x * cellSize + cellSize / 2f, cell.y * cellSize + cellSize / 2f);
+            Vector3 spawnPos = transform.position + new Vector3(cell.x * CellSize + CellSize / 2f, cell.y * CellSize + CellSize / 2f);
             TurretController turret = Instantiate(selectedTurretButton.TurretPrefab, spawnPos, Quaternion.identity, towerParent);
             turret.Initialize(selectedTurretButton.BaseTurret);
             grid[cell.x, cell.y] = CellType.Tower;
@@ -157,43 +157,43 @@ public class TowerGridManager : Singleton<TowerGridManager>
     }
 
     private bool InBounds(Vector2Int c) =>
-        c.x >= 0 && c.x < width && c.y >= 0 && c.y < height;
+        c.x >= 0 && c.x < Width && c.y >= 0 && c.y < Height;
 
     public Vector2Int WorldToCell(Vector3 worldPos)
     {
-        int x = Mathf.FloorToInt((worldPos.x - transform.position.x) / cellSize);
-        int y = Mathf.FloorToInt((worldPos.y - transform.position.y) / cellSize);
+        int x = Mathf.FloorToInt((worldPos.x - transform.position.x) / CellSize);
+        int y = Mathf.FloorToInt((worldPos.y - transform.position.y) / CellSize);
         return new Vector2Int(x, y);
     }
 
-    public void ToggleCell(Vector2Int cell)
-    {
-        if (!InBounds(cell)) return;
-
-        switch (brushType)
-        {
-            case CellType.Road:
-                if (roadCells.Contains(cell)) roadCells.Remove(cell);
-                else roadCells.Add(cell);
-                break;
-
-            case CellType.Tree:
-                if (treeCells.Contains(cell)) treeCells.Remove(cell);
-                else treeCells.Add(cell);
-                break;
-        }
-
-        OnValidate();
-    }
+    private bool wasFocused;
 
     private void OnDrawGizmos()
     {
+#if UNITY_EDITOR
+        // avoid drawing the grid if not selected in the hierarchy
+        if (Selection.activeGameObject != gameObject)
+        {
+            wasFocused = false;
+            return;
+        }
+        else
+        {
+            // if it gained focus update the grid, in case it was modified
+            if (!wasFocused)
+            {
+                InitGrid();
+            }
+            wasFocused = true;
+        }
+
+#endif
         if (grid == null) InitGrid();
 
-        for (int x = 0; x < width; x++)
-            for (int y = 0; y < height; y++)
+        for (int x = 0; x < Width; x++)
+            for (int y = 0; y < Height; y++)
             {
-                Vector3 cellCenter = transform.position + new Vector3(x + 0.5f, y + 0.5f) * cellSize;
+                Vector3 cellCenter = transform.position + new Vector3(x + 0.5f, y + 0.5f) * CellSize;
                 switch (grid[x, y])
                 {
                     case CellType.Empty: Gizmos.color = Color.green; break;
@@ -201,7 +201,7 @@ public class TowerGridManager : Singleton<TowerGridManager>
                     case CellType.Tree: Gizmos.color = new Color(0.4f, 0.2f, 0f); break;
                     case CellType.Tower: Gizmos.color = Color.blue; break;
                 }
-                Gizmos.DrawWireCube(cellCenter, Vector3.one * (cellSize * 0.9f));
+                Gizmos.DrawWireCube(cellCenter, Vector3.one * (CellSize * 0.9f));
             }
     }
 }

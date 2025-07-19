@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd2c7f58d3588d345b759c0da36895b7, type: 3}
-  m_Name: Level1
+  m_Script: {fileID: 11500000, guid: 9b4f07024d04f2c47aedb805d3a0b547, type: 3}
+  m_Name: UltraHeavy
   m_EditorClassIdentifier: 
-  range: 2
-  fireRate: 1
-  projectileSpeed: 1000
-  damage: 1
-  cost: 50
-  upgradeCost: 100
+  speed: 20
+  maxHealth: 150
+  damageToPlayer: 4
+  reward: 50
+  prefab: {fileID: 717274828804270328, guid: 7f6d887bbd5c7a94cb44259fee30e751, type: 3}

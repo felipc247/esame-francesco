@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2142819523074302730}
   - component: {fileID: 2146010586402468069}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Graphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -927780204131658290, guid: 7e72ce2a505245e43ba626f5f137170f, type: 3}
+  m_Sprite: {fileID: 849565211181856007, guid: d2352df26d69ca54caceddac472ba6c6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -96,12 +96,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6960348752840181048}
-  - component: {fileID: -8163590243799149586}
   - component: {fileID: 3327299165824808330}
-  - component: {fileID: 6397319247667757835}
+  - component: {fileID: -8163590243799149586}
   - component: {fileID: 3743759835422828063}
-  m_Layer: 0
-  m_Name: Projectile
+  - component: {fileID: 7359533774408546997}
+  m_Layer: 6
+  m_Name: MultipiercingBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -123,33 +123,6 @@ Transform:
   - {fileID: 2142819523074302730}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &-8163590243799149586
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6511734976158796608}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &3327299165824808330
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -196,19 +169,33 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.06927144, y: 0.16432333}
   m_EdgeRadius: 0
---- !u!114 &6397319247667757835
-MonoBehaviour:
+--- !u!50 &-8163590243799149586
+Rigidbody2D:
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6511734976158796608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc1d3cde49e5519418baa7295f39eeec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageAmount: 1
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
 --- !u!114 &3743759835422828063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,4 +208,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ac5a2f0d27d86e40a1eece040a21701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3.9
+  speed: 200
+--- !u!114 &7359533774408546997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6511734976158796608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97e85d464995be14ead1e525db05fc58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifeTime: 5
+  bulletData: {fileID: 11400000, guid: 7d10c4f838fb3234b926237cca2e7dbf, type: 2}

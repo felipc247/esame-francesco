@@ -1,26 +1,26 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour
 {
+    [SerializeField, Header("Data")] EnemyData enemyData;
+    public EnemyData EnemyData => enemyData;
+
     [Header("Path")]
     [SerializeField] List<Transform> pathPoints;
-    private int currentPointIndex = 0;
+    int currentPointIndex = 0;
 
-    [Header("Movement")]
-    [SerializeField] float speed = 2f;
+    public float Speed => enemyData.Speed;
 
     [Header("Health")]
-    [SerializeField] float maxHealth = 10f;
-    [SerializeField] float currentHealth;
+    public float MaxHealth => enemyData.MaxHealth;
+    float currentHealth;
     [SerializeField] GameObject canvasLife;
     [SerializeField] Image lifeBar;
 
-    [Header("Damage")]
-    [SerializeField] int damageToPlayer = 1;
+    public int DamageToPlayer => enemyData.DamageToPlayer;
 
     [Header("Graphics")]
     [SerializeField] SpriteRenderer graphicsObject;
@@ -28,10 +28,11 @@ public class EnemyController : MonoBehaviour
     [Header("Physics")]
     [SerializeField] Rigidbody2D rb2D;
 
-    [Header("Reward")]
-    [SerializeField] int reward;
+    public int Reward => enemyData.Reward;
 
-    public int Reward => reward;
+    private int waveId = 0;
+
+    public int WaveId => waveId;
 
     // TODO: Modificare lo script in modo che si usi il RigidBody2D per il movimento invece che transform.position
 
@@ -56,7 +57,7 @@ public class EnemyController : MonoBehaviour
         Vector2 targetPoint = pathPoints[currentPointIndex].position;
         Vector2 direction = (targetPoint - (Vector2)(transform.position)).normalized;
 
-        rb2D.linearVelocity = (speed * Time.fixedDeltaTime * direction); /*= (Vector2)(speed * Time.fixedDeltaTime * direction);*/
+        rb2D.linearVelocity = (Speed * Time.fixedDeltaTime * direction); /*= (Vector2)(speed * Time.fixedDeltaTime * direction);*/
 
         UpdateGraphicsRotation(direction);
 
@@ -79,13 +80,13 @@ public class EnemyController : MonoBehaviour
         {
             if (direction.x > 0f)
             {
-                angle = 90f;
-                graphicsObject.flipY = true;
+                angle = -90f;
+                //graphicsObject.flipY = true;
             }
             else
             {
-                angle = -90f;
-                graphicsObject.flipY = true;
+                angle = 90f;
+                //graphicsObject.flipY = false;
             }
         }
         else
@@ -93,12 +94,13 @@ public class EnemyController : MonoBehaviour
             if (direction.y > 0f)
             {
                 angle = 0f;
+                //graphicsObject.flipY = true;
             }
             else
             {
                 angle = 180f;
+                //graphicsObject.flipY = false;
             }
-            graphicsObject.flipY = false;
         }
 
         graphicsObject.transform.localEulerAngles = new Vector3(0f, 0f, angle);
@@ -112,6 +114,9 @@ public class EnemyController : MonoBehaviour
         Die();
     }
 
+    // avoid die being called more than once
+    private bool isDead = false;
+
     public void TakeDamage(float amount)
     {
         currentHealth -= amount;
@@ -119,20 +124,24 @@ public class EnemyController : MonoBehaviour
         if (!canvasLife.activeSelf)
             canvasLife.SetActive(true);
 
-        lifeBar.fillAmount = currentHealth / maxHealth;
+        lifeBar.fillAmount = currentHealth / MaxHealth;
 
-        if (currentHealth <= 0f) Die();
+        if (currentHealth <= 0f && !isDead)
+        {
+            isDead = true;
+            GameManager.Instance.AddCoins(Reward);
+            Die();
+        }
     }
 
     private void Die()
     {
         // TODO: Si potrebbe fare di meglio? Come possiamo non eliminare l'oggetto e usarlo in un altro modo?
-        GameManager.Instance.AddCoins(reward);
-        WaveManager.Instance.Pooler.Set(this);
+        WaveManager.Instance.DefeatEnemy(this);
         gameObject.SetActive(false);
     }
 
-    internal void Initialize(List<Transform> pathPoints)
+    internal void Initialize(List<Transform> pathPoints, Vector2 startPosition, int waveId)
     {
         if (!gameObject.activeSelf)
         {
@@ -142,6 +151,11 @@ public class EnemyController : MonoBehaviour
         {
             this.pathPoints = pathPoints;
         }
-        currentHealth = maxHealth;
+        isDead = false;
+        this.waveId = waveId;
+        transform.position = startPosition;
+        currentPointIndex = 0;
+        currentHealth = MaxHealth;
+        lifeBar.fillAmount = 1f;
     }
 }

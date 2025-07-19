@@ -18,6 +18,7 @@ public class TurretController : MonoBehaviour, IPointerClickHandler, ISubscriber
     [SerializeField] Transform firePoint;
     [SerializeField] SpriteRenderer spriteRendererBase;
     [SerializeField] SpriteRenderer spriteRendererCannon;
+    [SerializeField] SpriteRenderer spriteRendererRange;
 
     [Header("Settings")]
     [SerializeField] Color colorSelected;
@@ -36,11 +37,25 @@ public class TurretController : MonoBehaviour, IPointerClickHandler, ISubscriber
             return turretLevelsData[GetNextTurretIndex()].Cost;
         }
     }
+    public TurretData NextData
+    {
+        get
+        {
+            if (GetNextTurretIndex() == -1) return null;
+            return turretLevelsData[GetNextTurretIndex()];
+        }
+    }
+
+    public TurretData CurrentData => currentData;
+
     public int SellPrice => currentData.SellPrice;
 
     public float FireCooldown { get => fireCooldown; set => fireCooldown = value; }
     public Transform CannonGraphics => cannonGraphics;
     public Transform FirePoint => firePoint;
+
+    private bool isGraphicsEnabled = false;
+
     private int GetNextTurretIndex()
     {
         int currentIndex = turretLevelsData.IndexOf(currentData);
@@ -91,7 +106,6 @@ public class TurretController : MonoBehaviour, IPointerClickHandler, ISubscriber
     public void Sell()
     {
         GameManager.Instance.AddCoins(SellPrice);
-        TowerGridManager.Instance.RemoveTower(this);
         Destroy();
     }
 
@@ -110,6 +124,13 @@ public class TurretController : MonoBehaviour, IPointerClickHandler, ISubscriber
             return;
         }
         currentData = turretLevelsData[nextIndex];
+        spriteRendererCannon.sprite = currentData.Sprite;
+
+        // update the turret graphics
+        if (isGraphicsEnabled)
+        {
+            ToggleGraphics(true);
+        }
         GameManager.Instance.SpendCoins(Cost);
     }
 
@@ -143,20 +164,25 @@ public class TurretController : MonoBehaviour, IPointerClickHandler, ISubscriber
 
     public void Destroy()
     {
+        TowerGridManager.Instance.RemoveTower(this);
         Destroy(gameObject);
     }
 
     private void ToggleGraphics(bool toggle)
     {
+        isGraphicsEnabled = toggle;
         if (toggle)
         {
             spriteRendererBase.color = colorSelected;
             spriteRendererCannon.color = colorSelected;
+            spriteRendererRange.enabled = true;
+            spriteRendererRange.transform.localScale = new(Range * 2, Range * 2);
         }
         else
         {
             spriteRendererBase.color = Color.white;
             spriteRendererCannon.color = Color.white;
+            spriteRendererRange.enabled = false;
         }
     }
 

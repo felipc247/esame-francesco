@@ -23,6 +23,7 @@ public class TurretIdlingState : State
 
     public override void OnUpdate()
     {
+        Debug.Log($"In range enemies {owner.GetInRangeEnemies().Count}");
         if (owner.GetInRangeEnemies().Count < 1) return;
 
         owner.SetState(ETurretState.Shooting);

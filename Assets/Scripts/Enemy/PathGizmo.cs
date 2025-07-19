@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class Path : MonoBehaviour
+public class PathGizmo : MonoBehaviour
 {
     public Color lineColor = Color.yellow;
 

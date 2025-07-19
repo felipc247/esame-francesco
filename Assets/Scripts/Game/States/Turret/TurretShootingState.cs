@@ -73,8 +73,9 @@ public class TurretShootingState : State
         if (GameManager.Instance.BulletPooler == null || owner.FirePoint == null)
             return;
 
-        Damager bullet = GameManager.Instance.BulletPooler.Get();
-        bullet.Initialize(owner.FirePoint.position, owner.FirePoint.rotation, owner.Damage);
+        Bullet bullet = GameManager.Instance.GetBullet(owner.CurrentData.BulletData);
+        bullet.GetComponent<BaseProjectile>().Speed = owner.CurrentData.ProjectileSpeed;
+        bullet.Initialize(owner.FirePoint.position, owner.FirePoint.rotation, owner.Damage, owner.CurrentData.BulletData);
         // TODO: Bisogna gestire la distruzione del proiettile in modo intelligente ed estendibile
         // si potrebbe usare una callback onDestroyProjectile ??
     }
