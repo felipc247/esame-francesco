@@ -2,10 +2,15 @@ using DesignPatterns.Generics;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class WaveManager : Singleton<WaveManager>
 {
+    [Header("UI")]
+    [SerializeField] TextMeshProUGUI waveText;
+
+    [Header("Waves")]
     [SerializeField] List<WaveData> wavesData;
     [SerializeField] float pauseBetweenWaves = 2f;
 
@@ -27,7 +32,13 @@ public class WaveManager : Singleton<WaveManager>
         Pools = new();
         wavesLeftEnemies = new();
         wavesLeftEnemies.AddRange(wavesData.Select(x => x.Enemies.Count));
+        RefreshUI();
         StartWaves();
+    }
+
+    private void RefreshUI()
+    {
+        waveText.text = $"Wave {currentWave + 1}/{wavesData.Count}";
     }
 
     private IEnumerator SpawnWave(float delay)
@@ -83,6 +94,7 @@ public class WaveManager : Singleton<WaveManager>
         if (currentWave < wavesData.Count - 1)
         {
             currentWave++;
+            RefreshUI();
             StopSpawningCoroutine();
             spawnCoroutine = StartCoroutine(SpawnWave(wavesData[currentWave].SpawnRate));
             GameManager.Instance.AddCoins(wavesData[enemy.WaveId].WavePrize);

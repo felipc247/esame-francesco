@@ -71,6 +71,13 @@ public class TowerGridManager : Singleton<TowerGridManager>
             Vector2Int cell = WorldToCell(mouseWorldPos);
             TryPlaceTower(cell);
         }
+
+        if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            Vector3 touchWorldPos = mainCamera.ScreenToWorldPoint(Input.GetTouch(0).position);
+            Vector2Int cell = WorldToCell(touchWorldPos);
+            TryPlaceTower(cell);
+        }
     }
 
     private void CreateVisualGrid()
