@@ -15,7 +15,7 @@ MonoBehaviour:
   range: 4
   fireRate: 2.5
   projectileSpeed: 1000
-  damage: 3
+  damage: 4
   cost: 1000
   sprite: {fileID: -7386468711316855551, guid: 5e2073056b246424991e7c2ca2bd4c53, type: 3}
   bulletData: {fileID: 11400000, guid: 489ab5d0b91901a4b966e172a8ee258f, type: 2}

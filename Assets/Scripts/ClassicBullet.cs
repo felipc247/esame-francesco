@@ -6,7 +6,6 @@ public class ClassicBullet : Bullet
     [SerializeField] float lifeTime = 5f;
     [SerializeField] ClassicBulletData bulletData;
 
-    public override int Damage { get; protected set; }
     public override BulletData BulletData => bulletData;
 
     private bool collided = false;

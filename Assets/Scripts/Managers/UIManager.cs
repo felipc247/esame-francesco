@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
     [Header("Turret Buttons")]
     public List<TurretButton> turretButtons;
-    [SerializeField] TextMeshProUGUI playerCoins;
+    [SerializeField] private TextMeshProUGUI _playerCoins;
+    [SerializeField] private ButtonGroupSelector _buttonGroupSelector;
+    [SerializeField] private Button _startSpeedButton;
 
     private void Start()
     {
+        _buttonGroupSelector.ButtonClick(_startSpeedButton);
         UpdateTurretButtons();
     }
 
@@ -24,7 +28,7 @@ public class UIManager : MonoBehaviour
 
     private void UpdatePlayerCoins()
     {
-        playerCoins.text = $"{GameManager.Instance.CurrentCoins}";
+        _playerCoins.text = $"{GameManager.Instance.CurrentCoins}";
     }
 
     public void UpdateTurretButtons()

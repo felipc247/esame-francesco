@@ -6,7 +6,6 @@ public class MultiPiercingBullet : Bullet
     [SerializeField] float lifeTime = 5f;
     [SerializeField] MultiPiercingBulletData bulletData;
 
-    public override int Damage { get; protected set; }
     public override BulletData BulletData => bulletData;
 
     private int piercingCount = 0;

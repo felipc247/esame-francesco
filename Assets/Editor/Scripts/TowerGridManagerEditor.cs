@@ -10,9 +10,10 @@ public class TowerGridManagerEditor : Editor
     {
         DrawDefaultInspector();
         EditorGUILayout.HelpBox(
-            "Piazza nella scene un GameObject con script TowerGridMaker:\n" +
-            "- Mettilo nella stessa posizione di questo oggetto\n" +
-            "- Edita la griglia a piacere e poi assegna GridData a TowerGridManager",
+            "How to use:\n" +
+            "- Place in the scene a gameObject with TowerGridMaker component\n" +
+            "- Place it in the same Position as this object\n" +
+            "- Edit freely the grid and then assign GridData to TowerGridManager",
             MessageType.Info);
     }
 }

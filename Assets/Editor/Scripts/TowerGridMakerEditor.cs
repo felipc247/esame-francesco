@@ -48,11 +48,11 @@ public class TowerGridMakerEditor : Editor
 
         EditorGUILayout.HelpBox(
             "In Scene View:\n" +
-            "- Left click per togglare celle\n" +
-            "- Scegli in 'Editor Brush' se dipingere Road o Tree\n" +
-            "- Puoi andare avanti e indietro con le modifiche fatte\n" +
-            "- Save si assicura di salvare le modifiche(non dovrebbe essere necessario) se CurrentData non è null" +
-            ", altrimenti ti permette di creare un nuovo SO in una cartella a scelta",
+            "- Left click to toggle cells\n" +
+            "- Choose in the 'Editor Brush' below whether to paint Road or Tree\n" +
+            "- Undo is available\n" +
+            "- Save makes sure to save changes, not necessary if CurrentData isn't null" +
+            ", else you can save the new data it in a folder of choice",
             MessageType.Info);
 
         if (GUILayout.Button("Save"))
